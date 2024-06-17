@@ -74,7 +74,35 @@ const coursewiseController = {
           res.status(500).send("Error fetching data from MySQL");
           return;
         }
-        console.log(results);
+        console.log(results, "hi from day query");
+        res.json(results); // Return data as JSON
+      }
+    );
+  },
+  timetabledata: (req, res) => {
+    const course_code = req.params.coursecode;
+    const year_code = req.params.yearcode;
+    const master_code = req.params.mastercode;
+    const exam_dayw = req.params.exam_dayw;
+    const daysession = req.params.daysession;
+    console.log(
+      course_code,
+      year_code,
+      master_code,
+      exam_dayw,
+      daysession,
+      "hii"
+    );
+    institutesConnection.query(
+      `SELECT exam_dayw,exam_day,paper_time,date_format(tentative_date,'%d-%m-%Y') as date,subject_name,paper_code,daysession,year_code,subject_no,duration FROM s24_timetable_subjects_course_all where course_code="${course_code}" and year_code=${year_code} and master_code="${master_code}" and exam_dayw=${exam_dayw} and daysession="${daysession}" and paper_code!='' and block='N'
+		 and duration!='' and paper_time!='' and exam_dayw !='' and daysession !=''
+		ORDER BY paper_code;`,
+      (error, results, fields) => {
+        if (error) {
+          console.error("Error querying MySQL:", error);
+          res.status(500).send("Error fetching data from MySQL");
+          return;
+        }
         res.json(results); // Return data as JSON
       }
     );
