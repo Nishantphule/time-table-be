@@ -13,7 +13,7 @@ institutesConnection.connect((err) => {
     console.error("Error connecting to MySQL:", err);
     return;
   }
-  console.log("Connected to Institutes database for course wise");
+  console.log("Connected to Institutes database");
 });
 
 const coursewiseController = {
