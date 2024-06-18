@@ -4,6 +4,7 @@ const mysql = require("mysql");
 require("dotenv").config();
 const cors = require("cors");
 const coursewiseRouter = require("./routes/coursewiseRoutes");
+const institutewiseRouter = require("./routes/institutewiseRoutes");
 
 // Create Express app
 const app = express();
@@ -47,20 +48,7 @@ app.get("/", async (req, res) => {
 
 app.use("/coursewise", coursewiseRouter);
 
-// Institutes route to fetch data from MySQL
-app.get("/institutes", (req, res) => {
-  institutesConnection.query(
-    "SELECT * FROM institutes",
-    (error, results, fields) => {
-      if (error) {
-        console.error("Error querying MySQL:", error);
-        res.status(500).send("Error fetching data from MySQL");
-        return;
-      }
-      res.json(results); // Return data as JSON
-    }
-  );
-});
+app.use("/institutewise", institutewiseRouter);
 
 // inst_courses route to fetch data from MySQL
 app.get("/course", (req, res) => {
