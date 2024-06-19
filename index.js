@@ -5,6 +5,9 @@ require("dotenv").config();
 const cors = require("cors");
 const coursewiseRouter = require("./routes/coursewiseRoutes");
 const institutewiseRouter = require("./routes/institutewiseRoutes");
+const daywiseRouter = require("./routes/daywiseRoutes");
+const papercodewiseRouter = require("./routes/papercodewiseRoutes");
+const examcenterRouter = require("./routes/examcenterwiseRoutes");
 
 // Create Express app
 const app = express();
@@ -50,59 +53,16 @@ app.use("/coursewise", coursewiseRouter);
 
 app.use("/institutewise", institutewiseRouter);
 
+app.use("/daywise", daywiseRouter);
+
+app.use("/papercodewise", papercodewiseRouter);
+
+app.use("/examcenterwise", examcenterRouter);
+
 // inst_courses route to fetch data from MySQL
 app.get("/course", (req, res) => {
   institutesConnection.query(
     "SELECT * FROM `courses1` ORDER BY `courses1`.`course_code` ASC",
-    (error, results, fields) => {
-      if (error) {
-        console.error("Error querying MySQL:", error);
-        res.status(500).send("Error fetching data from MySQL");
-        return;
-      }
-      res.json(results); // Return data as JSON
-    }
-  );
-});
-
-// inst_courses route to fetch data from MySQL
-app.get("/yearcode/:coursecode", (req, res) => {
-  const course_code = req.params.coursecode;
-  institutesConnection.query(
-    `select distinct(year_code) from s24_timetable_subjects_course_all where course_code="${course_code}" order by year_code;`,
-    (error, results, fields) => {
-      if (error) {
-        console.error("Error querying MySQL:", error);
-        res.status(500).send("Error fetching data from MySQL");
-        return;
-      }
-      res.json(results); // Return data as JSON
-    }
-  );
-});
-
-// inst_courses route to fetch data from MySQL
-app.get("/mastercode/:coursecode/:yearcode", (req, res) => {
-  const course_code = req.params.coursecode;
-  const year_code = req.params.yearcode;
-  console.log(course_code, year_code);
-  institutesConnection.query(
-    `select distinct(master_code) from s24_timetable_subjects_course_all where course_code="${course_code}" and year_code="${year_code}" order by year_code,master_code`,
-    (error, results, fields) => {
-      if (error) {
-        console.error("Error querying MySQL:", error);
-        res.status(500).send("Error fetching data from MySQL");
-        return;
-      }
-      res.json(results); // Return data as JSON
-    }
-  );
-});
-
-// papercode route to fetch data from MySQL
-app.get("/papercode", (req, res) => {
-  institutesConnection.query(
-    "SELECT * FROM paper_code_s24",
     (error, results, fields) => {
       if (error) {
         console.error("Error querying MySQL:", error);
