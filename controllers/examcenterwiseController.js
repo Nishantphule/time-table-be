@@ -17,10 +17,23 @@ institutesConnection.connect((err) => {
 });
 
 const examcenterwiseController = {
+  getexamcenters: async (req, res) => {
+    institutesConnection.query(
+      "SELECT distinct(exam_center) FROM s24_rac_dc_details",
+      (error, results, fields) => {
+        if (error) {
+          console.error("Error querying MySQL:", error);
+          res.status(500).send("Error fetching data from MySQL");
+          return;
+        }
+        res.json(results); // Return data as JSON
+      }
+    );
+  },
   getPapercodes: async (req, res) => {
     const { centercode } = req.params;
     institutesConnection.query(
-      `select paper_code from w23_th_input where center_code=${centercode} group by paper_code;`,
+      `select paper_code from s24_th_input where center_code=${centercode} group by paper_code;`,
       (error, results, fields) => {
         if (error) {
           console.error("Error querying MySQL:", error);
