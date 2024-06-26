@@ -1,5 +1,4 @@
 const {
-  getcoursenames,
   getcoursecodes,
   getyearcodes,
   getmastercodes,
